@@ -1,0 +1,38 @@
+private void revicebton_Click(object sender, System.EventArgs e)
+		{
+		db.conn.Open ();
+			string sql="select * from Film where 电影名称='"+this.textname.Text .Trim()+"' ";
+             OleDbDataAdapter dp=new OleDbDataAdapter(sql,db.conn);
+               DataSet de=new DataSet();
+			dp.Fill(de);
+			DataTable mytable=new DataTable();
+			
+
+			mytable=de.Tables[0];
+			DataRow row1;
+			row1=mytable.Rows[0];
+
+
+			row1[0]=textname.Text.Trim();
+			row1[1]=textdir.Text .Trim ();
+			row1[2]=textplay.Text .Trim ();
+            row1[3]=textlag.Text .Trim ();
+			row1[4]=textlong.Text .Trim ();
+			row1[5]=textdate.Text .Trim ();
+			row1[6]=textpri.Text.Trim ();
+			row1[7]=texttyp.Text .Trim ();
+			row1[8]=texttime.Text .Trim ();
+			row1[9]=textnum.Text.Trim();
+			OleDbCommandBuilder cmdbld=new OleDbCommandBuilder(dp);
+			dp.Update(mytable);
+			
+			MessageBox.Show(" 修改成功!");
+			OleDbCommand cmd1=new OleDbCommand(s,db.conn);
+			DataSet ds1=new DataSet();
+			OleDbDataAdapter da=new OleDbDataAdapter(cmd1);
+			da.Fill(ds1,"Film");
+			FilmGrid.DataSource=ds1.Tables["Film"];
+			
+			db.conn.Close ();
+
+			}
