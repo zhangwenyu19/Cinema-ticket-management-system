@@ -1,0 +1,10 @@
+private void sellgrid_Click(object sender, System.EventArgs e)
+		{
+			int x=sellgrid.CurrentCell.RowNumber;
+			
+			lbname.Text=sellgrid[x,0].ToString();
+			lbtime.Text=sellgrid[x,8].ToString();
+			lbpri.Text=sellgrid[x,6].ToString();
+			lbnum.Text=sellgrid[x,9].ToString();
+			
+		}
