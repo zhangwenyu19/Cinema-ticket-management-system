@@ -1,0 +1,98 @@
+private void btbook_Click(object sender, System.EventArgs e)
+		{
+			if(comdis.Enabled==true)
+			{
+				if((Convert.ToSingle(lbnum.Text))==0)
+				{
+					MessageBox.Show("票已售完！");
+					lbname.Text="";
+					lbtime.Text="";
+						lbpri.Text="";
+					lbnum.Text="";
+					label2.Text="";
+					
+					return;
+					
+				}
+				else
+				{
+					if(DialogResult.No==MessageBox.Show("是否确认购票","提问",
+						MessageBoxButtons.YesNo,MessageBoxIcon.Question,MessageBoxDefaultButton.Button1 ))
+					{
+						return;
+					}
+					else
+					{
+					lbnum.Text=Convert.ToString(Convert.ToSingle(lbnum.Text)-1);
+				
+					dc.conn.Open ();
+					string sql="select * from Film where 电影名称='"+this.lbname.Text .Trim()+"' ";
+					OleDbDataAdapter dp=new OleDbDataAdapter(sql,dc.conn);
+					DataSet de=new DataSet();
+					dp.Fill(de);
+					DataTable mytable=new DataTable();
+			
+
+					mytable=de.Tables[0];
+					DataRow row1;
+					row1=mytable.Rows[0];
+					row1[9]=lbnum.Text;
+					OleDbCommandBuilder cmdbld=new OleDbCommandBuilder(dp);
+					dp.Update(mytable);
+					OleDbCommand cmd1=new OleDbCommand(s,dc.conn);
+					DataSet ds1=new DataSet();
+					OleDbDataAdapter da=new OleDbDataAdapter(cmd1);
+					da.Fill(ds1,"Film");
+					sellgrid.DataSource=ds1.Tables["Film"];
+			         MessageBox.Show("订票成功！");
+						dc.conn.Close ();}
+				}
+			}
+			else if(tnum.Enabled==true)
+			{
+				if((Convert.ToSingle(tnum.Text))>(Convert.ToSingle(lbnum.Text)))
+				{
+if(DialogResult.Yes==MessageBox.Show("剩余票数不足无法进行操作！请重新输入票数！","提问",
+						MessageBoxButtons.YesNo,MessageBoxIcon.Question,MessageBoxDefaultButton.Button1))
+					{
+						lbname.Text="";
+						lbtime.Text="";
+						lbpri.Text="";
+						lbnum.Text="";
+						label2.Text="";
+						return;
+					}
+				}
+				else
+				{
+					if(DialogResult.No==MessageBox.Show("是否确认购票","提问",
+						MessageBoxButtons.YesNo,MessageBoxIcon.Question,MessageBoxDefaultButton.Button1 ))
+					{
+						return;
+					}
+					lbnum.Text=Convert.ToString(Convert.ToSingle(lbnum.Text)-(Convert.ToSingle(tnum.Text)));
+				
+					dc.conn.Open ();
+					string sql="select * from Film where 电影名称='"+this.lbname.Text .Trim()+"' ";
+					OleDbDataAdapter dp=new OleDbDataAdapter(sql,dc.conn);
+					DataSet de=new DataSet();
+					dp.Fill(de);
+					DataTable mytable=new DataTable();
+			
+
+					mytable=de.Tables[0];
+					DataRow row1;
+					row1=mytable.Rows[0];
+					row1[9]=lbnum.Text;
+					OleDbCommandBuilder cmdbld=new OleDbCommandBuilder(dp);
+					dp.Update(mytable);
+					OleDbCommand cmd1=new OleDbCommand(s,dc.conn);
+					DataSet ds1=new DataSet();
+					OleDbDataAdapter da=new OleDbDataAdapter(cmd1);
+					da.Fill(ds1,"Film");
+					sellgrid.DataSource=ds1.Tables["Film"];
+			              MessageBox.Show("订票成功！");
+					dc.conn.Close ();
+				}
+			}
+}
