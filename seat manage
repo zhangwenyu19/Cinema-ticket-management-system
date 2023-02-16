@@ -1,0 +1,34 @@
+Database d=new Database();
+	string s="update seat set state==1";
+			private void seat1_Click(object sender, System.EventArgs e)
+		{
+string sql="select * from seat where number="1";
+
+			d.Excutesql(s);
+			seat1.BackColor=System.Drawing.Color.Red;
+		}
+座位选择窗体的Load事件中的部分代码（同样也是以1号座位作为例子）
+如下：
+      DataBace db=new DataBace();
+		private void NForm1_Load(object sender, System.EventArgs e)
+		{
+			db.conn.Open();
+			OleDbCommand comm=new OleDbCommand ("select* from seat where number==1",db.conn  );
+			OleDbDataReader myReader=comm.ExecuteReader(CommandBehavior.CloseConnection);
+			if (myReader.Read ())
+			{
+				
+				if (myReader["state"].ToString()=="1")
+				{
+					seat1.BackColor=System.Drawing.Color.Red;
+					myReader.Close();
+					db.conn.Close();
+				}
+				
+				else
+				{
+					seat1.BackColor=System.Drawing.Color.DodgerBlue;
+					
+				}
+			}
+}
