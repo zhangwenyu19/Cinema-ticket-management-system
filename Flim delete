@@ -1,0 +1,73 @@
+Database dt=new Database();
+		private void delbton_Click(object sender, System.EventArgs e)
+		{
+			if (textname.Text =="")
+			{
+				MessageBox.Show("电影名不能为空！请重新输入！");
+				return;
+			}
+				
+		
+			else
+			{
+				string sql="select * from Film where 电影名称='" +textname.Text + "'";
+				if (dt.GetSingle(sql)==null)
+				{
+					MessageBox.Show("无对应电影!请重新输入电影名！");
+					textname.Clear();
+					return;
+				}
+				else
+				{
+					string Sql="select * from Film where 电影名称='"+this.textname.Text+"'";
+					
+					if (dt.GetSingle(Sql)==null)
+					{
+						MessageBox.Show("无此条信息!请重新输入！");
+						textname.Clear();
+						return;
+					}
+				
+				}
+			}
+			
+			try
+			{
+				string StrSQL="delete from  Film where 电影名称='"+this.textname.Text+"'";
+if(DialogResult.No==MessageBox.Show("删除数据后，该信息将无法恢复！确定要删除相关信息吗？","提问",
+					MessageBoxButtons.YesNo,MessageBoxIcon.Question,MessageBoxDefaultButton.Button1 ))
+				{
+					return;
+				}
+				else
+				{
+					dt.Excutesql(StrSQL);
+					MessageBox.Show("数据已删除");
+					textname.Text="";
+					textdir.Text="";
+					textplay.Text="";
+					textlag.Text="";
+					textlong.Text="";
+					textdate.Text="";
+					textpri.Text="";
+					texttyp.Text="";
+                    texttime.Text ="";   			
+					
+					
+				}
+				 db.conn.Close();
+				OleDbCommand cmd1=new OleDbCommand(s,db.conn);
+				DataSet ds1=new DataSet();
+				OleDbDataAdapter da=new OleDbDataAdapter(cmd1);
+				da.Fill(ds1,"Film");
+				FilmGrid.DataSource=ds1.Tables["Film"];
+			  // db.conn.Close();
+			
+			}
+			catch(Exception Err)
+			{
+MessageBox.Show("删除数据集记录操作失败："+Err.Message,"信息提示",MessageBoxButtons.OK,MessageBoxIcon.Information);
+		
+				
+			}	
+		}
