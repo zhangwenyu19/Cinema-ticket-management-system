@@ -1,0 +1,15 @@
+private void button1_Click(object sender, System.EventArgs e)
+		{
+			if(comdis.Enabled==true)
+			{
+				float a=Convert.ToSingle(lbpri.Text)	;
+				float b=Convert.ToSingle(comdis.Text);
+				label2.Text=Convert.ToString(a*(b/10));
+			}
+			else if(comdis.Enabled==false)
+			{
+				float a=Convert.ToSingle(lbpri.Text);
+				float b=Convert.ToSingle(tnum.Text);
+				label2.Text=Convert.ToString(a*(1-(b/100)));
+			}
+}
