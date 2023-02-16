@@ -1,0 +1,44 @@
+private void btninsert_Click(object sender, System.EventArgs e)
+		{
+			if (textname.Text=="")
+			{
+		MessageBox.Show("输入账号","提示",MessageBoxButtons.OK,MessageBoxIcon.Information);
+			}
+			else
+			{
+				db.conn.Open ();
+				OleDbCommand comm=new OleDbCommand("select * from member where 账号='" +textname.Text+ "'",db.conn );
+				if (comm.ExecuteScalar()!=null)
+				{
+	MessageBox.Show("会员已存在!","提示",MessageBoxButtons.OK,MessageBoxIcon.Information);
+					textname.Clear();
+				}
+				else
+				{
+					if (textname.Text==""||textnum.Text=="")
+					{
+MessageBox.Show("请输入完整信息!","提示",MessageBoxButtons.OK,MessageBoxIcon.Information);
+					}
+					else
+					{
+						OleDbCommand comm1=new OleDbCommand("select * from member where 手机号='" +textnum.Text+ "'",db.conn );
+						if(comm1.ExecuteScalar()!=null)
+						{
+MessageBox.Show("该手机号已注册!","提示",MessageBoxButtons.OK,MessageBoxIcon.Information);
+							textnum.Clear();
+						}
+						else
+						{
+							OleDbCommand mycomm=new OleDbCommand("insert into member values('"+textname.Text.ToString().Trim()+"','"+textnum.Text.ToString().Trim()+"')",db.conn );
+							mycomm.ExecuteNonQuery();						
+							MessageBox.Show("注册成功!");
+						}
+					}
+					db.conn.Close ();
+					OleDbCommand cmd1=new OleDbCommand(s,db.conn);
+					DataSet ds1=new DataSet();
+					OleDbDataAdapter da=new OleDbDataAdapter(cmd1);
+					da.Fill(ds1,"member");
+					membergrid.DataSource=ds1.Tables["member"];
+				}
+			}}
