@@ -1,0 +1,38 @@
+private void buselect_Click(object sender, System.EventArgs e)
+		{
+			 Database db=new Database();
+			DataSet ds=new DataSet();
+			try
+			{
+				
+				
+				db.GetConnection();
+				string selectcmd;
+				if(this.compai.Text=="所有记录")
+				{
+					selectcmd="SELECT * FROM toop";
+					ds=db.Query(selectcmd);
+				
+					DataTable mytable=new DataTable();
+					mytable=ds.Tables[0];
+					this.topgrid.DataSource=mytable;
+				}
+				else
+				{
+					selectcmd="SELECT * FROM toop WHERE 排名='"+this.compai.Text+"'";
+					//selectcmd+=this.textname.Text+"'";
+				
+					ds=db.Query(selectcmd);
+				
+					DataTable mytable=new DataTable();
+					mytable=ds.Tables[0];
+					this.topgrid.DataSource=mytable;
+				}
+				
+			}
+catch(Exception Err)
+			{
+MessageBox.Show("查询数据集记录操作失败："+Err.Message,"信息提示",
+					MessageBoxButtons.OK,MessageBoxIcon.Information);
+			}
+		}
