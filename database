@@ -1,0 +1,94 @@
+namespace FilmSelect
+{
+	/// <summary>
+	/// Database 的摘要说明。
+	/// </summary>
+	class Database
+	{
+
+		OleDbConnection myConnection;
+		OleDbCommand myCommand = new OleDbCommand();
+
+		public void GetConnection()
+		{
+
+			
+			myConnection = new OleDbConnection("PROVIDER=Microsoft.Jet.OLEDB.4.0;DATA Source=Films.mdb");
+			myConnection.Open();
+			
+			
+		}
+		public int Excutesql(string s)
+		{
+			try
+			{
+				GetConnection();
+				myCommand=new OleDbCommand(s,myConnection);
+				int i=myCommand.ExecuteNonQuery();
+				return i;
+			}
+			catch(Exception ex)
+			{
+				myConnection.Close();
+				throw new Exception(ex.Message);
+			}
+		}
+		public object GetSingle(string SQLString)
+		{
+			try
+			{
+				GetConnection();
+				myCommand = new OleDbCommand(SQLString, myConnection);
+				object obj = myCommand.ExecuteScalar();
+				if ((Object.Equals(obj, null)) || (Object.Equals(obj, System.DBNull.Value)))
+				{
+					return null;
+				}
+				else
+				{
+					return obj;
+				}
+			}
+			catch (Exception e)
+			{
+				myConnection.Close();
+				throw new Exception(e.Message);
+			}
+		}
+		
+		public DataSet Query(string SQLString)
+		{
+			DataSet ds = new DataSet();
+			try
+			{
+				GetConnection();
+
+				OleDbDataAdapter command;
+
+				string[] tempsql = SQLString.Split(';');
+				for (int i = 0; i < tempsql.Length; i++)
+				{
+					command = new OleDbDataAdapter(tempsql[i], myConnection);
+					command.Fill(ds, i.ToString());
+					
+				}
+
+				return ds;
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message);
+			}
+			finally
+			{
+				if (myConnection != null)
+				{
+					myConnection.Close();
+					myConnection.Dispose();
+				}
+			}
+			
+		}
+	}
+}
+
