@@ -1,0 +1,59 @@
+private void AmainForm_Load(object sender, System.EventArgs e)
+		{
+			db.conn.Open();
+			OleDbCommand comm=new OleDbCommand(s,db.conn );
+			
+			DataSet ds=new DataSet();
+			OleDbDataAdapter da=new OleDbDataAdapter(comm);
+			da.Fill(ds,"Film");
+			FilmGrid.DataSource=ds.Tables["Film"];
+			
+			db.conn.Close ();
+}
+
+private void addbton_Click(object sender, System.EventArgs e)
+		{
+			if (textname.Text=="")
+			{
+	MessageBox.Show("输入电影名","提示",MessageBoxButtons.OK,MessageBoxIcon.Information);
+			}
+			else
+			{
+				db.conn.Open ();
+				OleDbCommand comm=new OleDbCommand("select * from Film where 电影名称='" +textname.Text+ "'",db.conn );
+				if (comm.ExecuteScalar()!=null)
+				{
+	MessageBox.Show("电影已存在!","提示",MessageBoxButtons.OK,MessageBoxIcon.Information);
+					textname.Clear();
+				}
+				else
+				{
+					if (textname.Text==""||textdir.Text==""||textplay.Text==""||textlag.Text==""||textlong.Text==""||textdate.Text==""||textpri.Text==""||texttyp.Text==""||texttime.Text==""||textnum.Text=="")
+					{
+MessageBox.Show("请输入完整信息!","提示",MessageBoxButtons.OK,MessageBoxIcon.Information);
+					}
+					else
+					{
+OleDbCommand mycomm=new OleDbCommand("insert into Film values('"+textname.Text.ToString().Trim()+"','"+textdir.Text.ToString().Trim()+"','"+textplay.Text.ToString().Trim()+"','"+textlag.Text.ToString().Trim()+"','"+textlong.Text.ToString().Trim()+"','"+textdate.Text.ToString().Trim()+"','"+textpri.Text.ToString().Trim()+"','"+texttyp.Text.ToString().Trim()+"','"+texttime.Text.ToString().Trim()+"','"+textnum.Text.ToString().Trim()+"')",db.conn );
+						mycomm.ExecuteNonQuery();						
+						MessageBox.Show("添加成功!");
+                        textname.Text="";
+						textdir.Text="";
+						textplay.Text="";
+						textlag.Text="";
+						textlong.Text="";
+						textdate.Text="";
+						textpri.Text="";
+						texttyp.Text="";
+						texttime.Text="";
+						textnum.Text="";
+					}
+				}
+				db.conn.Close ();
+				OleDbCommand cmd1=new OleDbCommand(s,db.conn);
+				DataSet ds1=new DataSet();
+				OleDbDataAdapter da=new OleDbDataAdapter(cmd1);
+				da.Fill(ds1,"Film");
+				FilmGrid.DataSource=ds1.Tables["Film"];
+			}
+		}
